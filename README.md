@@ -8,6 +8,7 @@ Read more about git.io [here](https://github.com/blog/985-git-io-github-url-shor
 ```
 $ go get github.com/xlab/gitio/...
 ```
+Or grab a binary in the [Releases](https://github.com/xlab/gitio/releases) section.
 
 ### Usage
 ```
