@@ -1,3 +1,4 @@
+// Package gitio is a client for http://git.io URL shortener.
 package gitio
 
 import (
