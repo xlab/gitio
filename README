@@ -1,0 +1,8 @@
+### gitio
+
+This is a Go client for [git.io](http://git.io).
+Read more about gitio here: https://github.com/blog/985-git-io-github-url-shortener
+
+### License
+
+[MIT](http://xlab.mit-license.org)
