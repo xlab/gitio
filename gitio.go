@@ -7,7 +7,7 @@ import (
 	"net/url"
 )
 
-const API = "http://git.io"
+const gitioAPI = "http://git.io"
 
 // Shorten returns a short version of an URL, or an error otherwise.
 // Please note that it's not guaranteed the code will be accepted by git.io,
@@ -20,7 +20,7 @@ func Shorten(longURL, code string) (shortURL *url.URL, err error) {
 	form := make(url.Values)
 	form.Add("url", longURL)
 	form.Add("code", code)
-	resp, err := http.PostForm(API, form)
+	resp, err := http.PostForm(gitioAPI, form)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +32,7 @@ func Shorten(longURL, code string) (shortURL *url.URL, err error) {
 	case 422:
 		return nil, errors.New("only GitGub/Gist links are accepted")
 	default:
-		return nil, errors.New(fmt.Sprintf("bad status: %s", resp.Status))
+		return nil, fmt.Errorf("bad status: %s", resp.Status)
 	}
 }
 
@@ -41,7 +41,7 @@ func CheckTaken(code string) (bool, error) {
 	if len(code) == 0 {
 		return false, errors.New("no code provided")
 	}
-	resp, err := http.Get(fmt.Sprintf("%s/%s", API, code))
+	resp, err := http.Get(fmt.Sprintf("%s/%s", gitioAPI, code))
 	if err != nil {
 		return false, err
 	}
