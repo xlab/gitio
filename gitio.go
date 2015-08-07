@@ -4,11 +4,19 @@ package gitio
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
+	"path/filepath"
 )
 
-const gitioAPI = "http://git.io"
+const (
+	gitioPostAPI = "http://git.io/create"
+	gitioPutAPI  = "http://git.io"
+	gitioGetAPI  = "http://git.io"
+)
+
+const gitioAPI = "http://git.io/create"
 
 // Shorten returns a short version of an URL, or an error otherwise.
 // Please note that it's not guaranteed the code will be accepted by git.io,
@@ -20,17 +28,35 @@ func Shorten(longURL, code string) (shortURL *url.URL, err error) {
 
 	form := make(url.Values)
 	form.Add("url", longURL)
-	form.Add("code", code)
-	resp, err := http.PostForm(gitioAPI, form)
+
+	var api string
+	if len(code) > 0 {
+		form.Add("code", code)
+		api = gitioPutAPI
+	} else {
+		api = gitioPostAPI
+	}
+
+	resp, err := http.PostForm(api, form)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	switch resp.StatusCode {
-	case http.StatusCreated:
+	case http.StatusCreated: // for PUT
 		return resp.Location()
-	case 422:
+	case http.StatusOK: // for POST
+		randomCode, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		} else if len(randomCode) == 0 {
+			return nil, errors.New("unknown error")
+		}
+		u, _ := url.Parse(gitioGetAPI)
+		u.Path = filepath.Join(u.Path, string(randomCode))
+		return u, nil
+	case http.StatusInternalServerError, 422:
 		return nil, errors.New("only GitGub/Gist links are accepted")
 	default:
 		return nil, fmt.Errorf("bad status: %s", resp.Status)
@@ -42,7 +68,9 @@ func CheckTaken(code string) (bool, error) {
 	if len(code) == 0 {
 		return false, errors.New("no code provided")
 	}
-	resp, err := http.Get(fmt.Sprintf("%s/%s", gitioAPI, code))
+	u, _ := url.Parse(gitioGetAPI)
+	u.Path = filepath.Join(u.Path, code)
+	resp, err := http.Get(u.String())
 	if err != nil {
 		return false, err
 	}
