@@ -57,7 +57,7 @@ func Shorten(longURL, code string) (shortURL *url.URL, err error) {
 		u.Path = filepath.Join(u.Path, string(randomCode))
 		return u, nil
 	case http.StatusInternalServerError, 422:
-		return nil, errors.New("only GitGub/Gist links are accepted")
+		return nil, errors.New("only GitHub/Gist links are accepted")
 	default:
 		return nil, fmt.Errorf("bad status: %s", resp.Status)
 	}
