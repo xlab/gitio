@@ -77,8 +77,12 @@ func CheckTaken(code string) (bool, error) {
 	defer resp.Body.Close()
 	switch resp.StatusCode {
 	case http.StatusNotFound:
+		if resp.Request.URL.String() != u.String() {
+			// was redirected -> found
+			return true, nil
+		}
 		return false, nil
-	case http.StatusFound:
+	case http.StatusFound, http.StatusOK:
 		return true, nil
 	default:
 		// probably it's taken
