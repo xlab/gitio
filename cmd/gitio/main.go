@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/url"
 	"os"
 
 	"github.com/xlab/gitio"
@@ -41,6 +42,13 @@ func main() {
 			fmt.Println("tip: use the --force flag to suppress this check.")
 			os.Exit(1)
 		}
+	}
+	if u, err := url.Parse(longURL); err != nil {
+		fmt.Printf("error: %v\n", err)
+		os.Exit(1)
+	} else if u.Scheme != "https" {
+		fmt.Println("error: only HTTPS is supported, git.io will refuse HTTP links")
+		os.Exit(1)
 	}
 	shortURL, err := gitio.Shorten(longURL, codeOpt)
 	if err != nil {
