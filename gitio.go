@@ -1,4 +1,4 @@
-// Package gitio is a client for http://git.io URL shortener.
+// Package gitio is a client for https://git.io URL shortener.
 package gitio
 
 import (
@@ -11,12 +11,12 @@ import (
 )
 
 const (
-	gitioPostAPI = "http://git.io/create"
-	gitioPutAPI  = "http://git.io"
-	gitioGetAPI  = "http://git.io"
+	gitioPostAPI = "https://git.io/create"
+	gitioPutAPI  = "https://git.io"
+	gitioGetAPI  = "https://git.io"
 )
 
-const gitioAPI = "http://git.io/create"
+const gitioAPI = "https://git.io/create"
 
 // Shorten returns a short version of an URL, or an error otherwise.
 // Please note that it's not guaranteed the code will be accepted by git.io,

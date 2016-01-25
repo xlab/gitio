@@ -16,7 +16,7 @@ var (
 )
 
 func init() {
-	mflag.StringVar(&codeOpt, []string{"c", "-code"}, "", "A custom code for the short link, e.g. http://git.io/mycode")
+	mflag.StringVar(&codeOpt, []string{"c", "-code"}, "", "A custom code for the short link, e.g. https://git.io/mycode")
 	mflag.BoolVar(&forceOpt, []string{"f", "-force"}, false, "Try to shorten link even if the custom code has been used previously.")
 
 	mflag.Usage = func() {

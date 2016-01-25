@@ -1,6 +1,6 @@
 ## gitio [![GoDoc](https://godoc.org/github.com/xlab/gitio?status.svg)](https://godoc.org/github.com/xlab/gitio)
 
-This is a Go client for [git.io](http://git.io).
+This is a Go client for [git.io](https://git.io).
 
 Read more about git.io [here](https://github.com/blog/985-git-io-github-url-shortener).
 
@@ -14,11 +14,11 @@ Or grab a binary in the [Releases](https://github.com/xlab/gitio/releases) secti
 ```
 $ gitio -h
 Usage: gitio <long url>
-  -c, --code=""        A custom code for the short link, e.g. http://git.io/mycode
+  -c, --code=""        A custom code for the short link, e.g. https://git.io/mycode
   -f, --force=false    Try to shorten link even if the custom code has been used previously.
 
 $ gitio -c gitio.go https://github.com/xlab/gitio/blob/master/gitio.go
-http://git.io/gitio.go
+https://git.io/gitio.go
 ```
 
 ### License
